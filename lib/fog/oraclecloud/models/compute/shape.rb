@@ -16,7 +16,6 @@ module Fog
 	      attribute :root_disk_size
 	      attribute :ssd_data_size
 	      attribute :uri
-
 	    end
 	  end
   end
