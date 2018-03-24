@@ -62,12 +62,22 @@ module Fog
           
           data = service.create_instance(name, shape || 'oc3', imagelist || '/oracle/public/oel_6.4_2GB_v1', label, sshkeys)
           merge_attributes(data.body['instances'][0])
-        end
+				end
+				
+				def start
+					requires :name
+					service.start_instance(name)
+				end
+
+				def stop
+					requires :name
+					service.stop_instance(name)
+				end
 
         def destroy
         	requires :name
         	service.delete_instance(name)
-        end
+				end
 
         def get_security_lists
         	seclists = []
