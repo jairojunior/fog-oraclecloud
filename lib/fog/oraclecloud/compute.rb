@@ -52,6 +52,9 @@ module Fog
       model :shape
       collection :shapes
 
+      model :vnic
+      collection :vnics
+
 			request_path 'fog/oraclecloud/requests/compute'
      	request :list_security_applications
      	request :create_security_application
@@ -127,6 +130,11 @@ module Fog
 
       request :get_shape
       request :list_shapes
+
+      request :list_vnics
+
+      request :start_instance
+      request :stop_instance
 
 			class Real
 
