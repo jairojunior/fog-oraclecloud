@@ -2,11 +2,11 @@ module Fog
   module Compute
     class OracleCloud
       class Real
-      	def list_ssh_keys
+        def list_ssh_keys
           response = request(
-            :expects => 200,
-            :method  => 'GET',
-            :path    => "/sshkey/Compute-#{@identity_domain}/"
+            expects: 200,
+            method: 'GET',
+            path: "/sshkey/Compute-#{@identity_domain}/"
           )
           response
         end
@@ -16,7 +16,7 @@ module Fog
         def list_ssh_keys
           response = Excon::Response.new
 
-          sshkeys = self.data[:sshkeys].values
+          sshkeys = data[:sshkeys].values
 
           response.body = {
             'result' => sshkeys

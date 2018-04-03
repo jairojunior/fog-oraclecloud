@@ -2,11 +2,10 @@ module Fog
   module Storage
     class OracleCloud
       class Containers < Fog::Collection
+        model Fog::Storage::OracleCloud::Container
 
-      	model Fog::Storage::OracleCloud::Container
-
-      	def all
-          containers = service.list_containers().body
+        def all
+          containers = service.list_containers.body
           load(containers)
         end
 
@@ -16,9 +15,7 @@ module Fog
           data['name'] = name
           new(data)
         end
-
       end
     end
-
   end
 end

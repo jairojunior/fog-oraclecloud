@@ -2,35 +2,35 @@ module Fog
   module Compute
     class OracleCloud
       class Real
-      	def stop_orchestration (name)
-          if !name.start_with?("/Compute-") then
+        def stop_orchestration(name)
+          unless name.start_with?('/Compute-')
             # They haven't provided a well formed name, add their name in
             name = "/Compute-#{@identity_domain}/#{@username}/#{name}"
-          end   
+          end
           request(
-            :method   => 'PUT',
-            :expects  => 200,
-            :path     => "/orchestration#{name}?action=stop",
-            :headers  => {
+            method: 'PUT',
+            expects: 200,
+            path: "/orchestration#{name}?action=stop",
+            headers: {
               'Content-Type' => 'application/oracle-compute-v3+json'
             }
           )
-      	end
+        end
       end
 
       class Mock
-        def stop_orchestration (name)
+        def stop_orchestration(name)
           response = Excon::Response.new
           clean_name = name.sub "/Compute-#{@identity_domain}/#{@username}/", ''
 
-          if self.data[:orchestrations][clean_name] 
-            self.data[:orchestrations][clean_name]['status'] = 'stopped'
-            instance = self.data[:orchestrations][clean_name]
+          if data[:orchestrations][clean_name]
+            data[:orchestrations][clean_name]['status'] = 'stopped'
+            instance = data[:orchestrations][clean_name]
             response.status = 200
             response.body = instance
             response
           else
-            raise Fog::Compute::OracleCloud::NotFound.new("Orchestration #{name} does not exist");
+            raise Fog::Compute::OracleCloud::NotFound, "Orchestration #{name} does not exist"
           end
         end
       end

@@ -6,22 +6,22 @@ module Fog
       class Snapshot < Fog::Model
         identity  :name
 
-        attribute :cloned_services_size,  :aliases=>'clonedServicesSize'
-        attribute :creation_time,  :aliases=>'creationTime'
-        attribute :cloned_services,  :aliases=>'clonedServices'
+        attribute :cloned_services_size, aliases: 'clonedServicesSize'
+        attribute :creation_time, aliases: 'creationTime'
+        attribute :cloned_services, aliases: 'clonedServices'
         attribute :status
         attribute :description
 
         attribute :database_id
-       
+
         def completed?
-          status == "Succeeded"
+          status == 'Succeeded'
         end
 
         def deleting?
-          status == "Terminating"
+          status == 'Terminating'
         end
- 
+
         def save
           create
         end
@@ -51,7 +51,7 @@ module Fog
         private
 
         def create
-          requires :name, :description, :database_id 
+          requires :name, :description, :database_id
           data = service.create_snapshot(name, description, database_id)
         end
       end

@@ -2,34 +2,34 @@ require 'fog/core/model'
 
 module Fog
   module Compute
-  	class OracleCloud
-	    class SecurityApplication < Fog::Model
-	      identity  :name
+    class OracleCloud
+      class SecurityApplication < Fog::Model
+        identity  :name
 
-	      attribute :protocol
-	      attribute :name
-	      attribute :uri
-	      attribute :icmptype
-	      attribute :proxyuri
-	      attribute :dport
-	      attribute :icmpcode
+        attribute :protocol
+        attribute :name
+        attribute :uri
+        attribute :icmptype
+        attribute :proxyuri
+        attribute :dport
+        attribute :icmpcode
 
-	      # Only used in create
-	      attribute :description
+        # Only used in create
+        attribute :description
 
- 				def save
-          #identity ? update : create
+        def save
+          # identity ? update : create
           create
-        end
+       end
 
-				def create
-        	requires :name, :protocol
-          
+        def create
+          requires :name, :protocol
+
           data = service.create_security_application(name, protocol,
-                                            :dport => dport,
-                                            :icmptype => icmptype,
-                                            :icmpcode => icmpcode,
-                                            :description => description)
+                                                     dport: dport,
+                                                     icmptype: icmptype,
+                                                     icmpcode: icmpcode,
+                                                     description: description)
           merge_attributes(data.body)
         end
 
@@ -37,7 +37,7 @@ module Fog
           requires :name
           service.delete_security_application(name)
         end
-	    end
-	  end
+      end
+    end
   end
 end

@@ -2,16 +2,16 @@ require 'fog/core/model'
 
 module Fog
   module Compute
-  	class OracleCloud
-	    class Volume < Fog::Model
-	      identity  :name
+    class OracleCloud
+      class Volume < Fog::Model
+        identity  :name
 
-	      attribute :status
-	      attribute :account
-	      attribute :writecache
-	      attribute :managed
-	      attribute :description
-	      attribute :tags
+        attribute :status
+        attribute :account
+        attribute :writecache
+        attribute :managed
+        attribute :description
+        attribute :tags
         attribute :bootable
         attribute :hypervisor
         attribute :quota
@@ -26,13 +26,13 @@ module Fog
         attribute :imagelist
         attribute :size
 
- 				def save
-          #identity ? update : create
+        def save
+          # identity ? update : create
           create
-        end
+       end
 
-				def create
-        	requires :name, :size
+        def create
+          requires :name, :size
 
           data = service.create_volume(name, size)
         end
@@ -41,7 +41,7 @@ module Fog
           requires :name
           service.delete_volume(name)
         end
-	    end
-	  end
+      end
+    end
   end
 end

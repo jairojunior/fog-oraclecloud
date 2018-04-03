@@ -4,17 +4,16 @@ module Fog
   module OracleCloud
     class Database
       class Recovery < Fog::Model
-
-        attribute :db_tag, :aliases=>'dbTag'
-        attribute :recovery_start_date,  :aliases=>'recoveryStartDate'
-        attribute :recovery_complete_date,  :aliases=>'recoveryCompleteDate'
+        attribute :db_tag, aliases: 'dbTag'
+        attribute :recovery_start_date, aliases: 'recoveryStartDate'
+        attribute :recovery_complete_date, aliases: 'recoveryCompleteDate'
         attribute :status
         attribute :latest
         attribute :timestamp
         attribute :database_id
-       
+
         def completed?
-          status == "COMPLETED"
+          status == 'COMPLETED'
         end
 
         private
@@ -23,7 +22,7 @@ module Fog
           requires :database_id
 
           data = begin
-            if !db_tag.nil? then
+            if !db_tag.nil?
               collection.get(database_id, 'tag', db_tag)
             else
               collection.get(database_id)

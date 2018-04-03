@@ -2,26 +2,26 @@ module Fog
   module Compute
     class OracleCloud
       class Real
-      	def create_security_association(name, seclist, vcable)
+        def create_security_association(name, seclist, vcable)
           name.sub! "/Compute-#{@identity_domain}/#{@username}/", ''
           seclist.sub! "/Compute-#{@identity_domain}/#{@username}/", ''
 
-          body_data     = {
+          body_data = {
             'name'              => "/Compute-#{@identity_domain}/#{@username}/#{name}",
             'seclist'           => "/Compute-#{@identity_domain}/#{@username}/#{seclist}",
             'vcable'					  => vcable
           }
-          body_data = body_data.reject {|key, value| value.nil?}
+          body_data = body_data.reject { |_key, value| value.nil? }
           request(
-            :method   => 'POST',
-            :expects  => 201,
-            :path     => "/secassociation/",
-            :body     => Fog::JSON.encode(body_data),
-            :headers  => {
+            method: 'POST',
+            expects: 201,
+            path: '/secassociation/',
+            body: Fog::JSON.encode(body_data),
+            headers: {
               'Content-Type' => 'application/oracle-compute-v3+json'
             }
           )
-      	end
+        end
       end
       class Mock
         def create_security_association(name, seclist, vcable)

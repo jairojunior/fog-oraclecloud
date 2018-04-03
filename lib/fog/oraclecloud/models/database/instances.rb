@@ -4,11 +4,10 @@ module Fog
   module OracleCloud
     class Database
       class Instances < Fog::Collection
+        model Fog::OracleCloud::Database::Instance
 
-      	model Fog::OracleCloud::Database::Instance
-
-      	def all
-          data = service.list_instances().body['services']
+        def all
+          data = service.list_instances.body['services']
           load(data)
         end
 

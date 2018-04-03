@@ -13,7 +13,7 @@ module Fog
         attribute :status
 
         attribute :database_id
-       
+
         def save
           create
         end
@@ -43,7 +43,7 @@ module Fog
         private
 
         def create
-          requires :ruleName, :database_id, :source 
+          requires :ruleName, :database_id, :source
           service.create_access_rule(database_id, ruleName, description, ports, source, destination || 'DB', status || 'enabled')
         end
       end

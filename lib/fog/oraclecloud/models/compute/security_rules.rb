@@ -2,21 +2,20 @@ require 'fog/core/collection'
 
 module Fog
   module Compute
-  	class OracleCloud
-	    class SecurityRules < Fog::Collection
+    class OracleCloud
+      class SecurityRules < Fog::Collection
+        model Fog::Compute::OracleCloud::SecurityRule
 
-	    	model Fog::Compute::OracleCloud::SecurityRule
-				
-				def all
-					data = service.list_security_rules().body['result']
-					load(data)
-				end
+        def all
+          data = service.list_security_rules.body['result']
+          load(data)
+        end
 
- 				def get(name)
+        def get(name)
           data = service.get_security_rule(name).body
           new(data)
-        end
-	    end
-	  end
+       end
+      end
+    end
   end
 end

@@ -2,11 +2,11 @@ module Fog
   module Compute
     class OracleCloud
       class Real
-      	def list_orchestrations
+        def list_orchestrations
           response = request(
-            :expects => 200,
-            :method  => 'GET',
-            :path    => "/orchestration/Compute-#{@identity_domain}/"
+            expects: 200,
+            method: 'GET',
+            path: "/orchestration/Compute-#{@identity_domain}/"
           )
           response
         end
@@ -16,7 +16,7 @@ module Fog
         def list_orchestrations
           response = Excon::Response.new
 
-          orchs = self.data[:orchestrations].values
+          orchs = data[:orchestrations].values
           response.body = {
             'result' => orchs
           }

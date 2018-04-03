@@ -4,14 +4,14 @@ module Fog
   module OracleCloud
     class Database
       class Backup < Fog::Model
-        identity  :db_tag, :aliases=>'dbTag'
+        identity  :db_tag, aliases: 'dbTag'
 
-        attribute :backup_complete_date,  :aliases=>'backupCompleteDate'
+        attribute :backup_complete_date, aliases: 'backupCompleteDate'
         attribute :status
         attribute :database_id
-       
+
         def completed?
-          status == "COMPLETED"
+          status == 'COMPLETED'
         end
 
         private

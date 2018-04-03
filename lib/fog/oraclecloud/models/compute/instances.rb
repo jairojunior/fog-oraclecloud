@@ -2,21 +2,20 @@ require 'fog/core/collection'
 
 module Fog
   module Compute
-  	class OracleCloud
-	    class Instances < Fog::Collection
+    class OracleCloud
+      class Instances < Fog::Collection
+        model Fog::Compute::OracleCloud::Instance
 
-	    	model Fog::Compute::OracleCloud::Instance
-				
- 				def get(name)
+        def get(name)
           data = service.get_instance(name).body
           new(data)
-        end
+       end
 
-				def all
-					data = service.list_instances().body['result']
-					load(data)
-				end
-	    end
-	  end
+        def all
+          data = service.list_instances.body['result']
+          load(data)
+        end
+      end
+    end
   end
 end

@@ -2,11 +2,11 @@ module Fog
   module Compute
     class OracleCloud
       class Real
-      	def list_ip_associations
+        def list_ip_associations
           response = request(
-            :expects  => 200,
-            :method   => 'GET',
-            :path     => "/ip/association/Compute-#{@identity_domain}/"
+            expects: 200,
+            method: 'GET',
+            path: "/ip/association/Compute-#{@identity_domain}/"
           )
           response
         end
@@ -16,7 +16,7 @@ module Fog
         def list_ip_associations
           response = Excon::Response.new
 
-          ips = self.data[:ip_associations].values
+          ips = data[:ip_associations].values
           response.body = {
             'result' => ips
           }

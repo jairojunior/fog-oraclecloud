@@ -4,7 +4,6 @@ module Fog
   module OracleCloud
     class Java
       class Servers < Fog::Collection
-
         model Fog::OracleCloud::Java::Server
 
         def all(service_name)
@@ -15,10 +14,9 @@ module Fog
 
         def get(service_name, server_name)
           data = service.get_server(service_name, server_name).body['servers'].first
-          data['service_name'] = service_name          
+          data['service_name'] = service_name
           new(data)
         end
-
       end
     end
   end

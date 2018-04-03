@@ -3,15 +3,15 @@ module Fog
     class OracleCloud
       class Real
         def get_ssh_key(name)
-          if !name.start_with?("/Compute-") then
+          unless name.start_with?('/Compute-')
             # They haven't provided a well formed name, add their name in
             name = "/Compute-#{@identity_domain}/#{@username}/#{name}"
           end
           response = request(
-            :expects  => 200,
-            :method   => 'GET',
-            :path     => "/sshkey#{name}",
-            :headers  => {
+            expects: 200,
+            method: 'GET',
+            path: "/sshkey#{name}",
+            headers: {
               'Content-Type' => 'application/oracle-compute-v3+json',
               'Accept' => 'application/oracle-compute-v3+json'
             }
@@ -25,12 +25,12 @@ module Fog
           response = Excon::Response.new
           clean_name = name.sub "/Compute-#{@identity_domain}/#{@username}/", ''
 
-          if sshkey = self.data[:sshkeys][clean_name] 
+          if sshkey = data[:sshkeys][clean_name]
             response.status = 200
             response.body = sshkey
             response
-          else;
-            raise Fog::Compute::OracleCloud::NotFound.new("SSHKey #{name} does not exist");
+          else
+            raise Fog::Compute::OracleCloud::NotFound, "SSHKey #{name} does not exist"
           end
         end
       end

@@ -2,11 +2,11 @@ module Fog
   module OracleCloud
     class Database
       class Real
-      	def list_recoveries(db_name)
+        def list_recoveries(db_name)
           response = request(
-            :expects  => 200,
-            :method   => 'GET',
-            :path     => "/paas/service/dbcs/api/v1.1/instances/#{@identity_domain}/#{db_name}/backups/recovery/history"
+            expects: 200,
+            method: 'GET',
+            path: "/paas/service/dbcs/api/v1.1/instances/#{@identity_domain}/#{db_name}/backups/recovery/history"
           )
           response
         end
@@ -16,19 +16,17 @@ module Fog
         def list_recoveries(db_name)
           response = Excon::Response.new
 
-          if !self.data[:recoveries][db_name] then self.data[:recoveries][db_name] = [] end
-          recoveries = self.data[:recoveries][db_name]
+          data[:recoveries][db_name] = [] unless data[:recoveries][db_name]
+          recoveries = data[:recoveries][db_name]
 
-          recoveries.each_with_index { |r, i| 
-            if r['status'] = 'IN PROGRESS' then
-              if Time.now - self.data[:created_at][:recoveries][db_name][i] >= Fog::Mock.delay
-                self.data[:created_at][:recoveries][db_name].delete(i)
-                self.data[:recoveries][db_name][i]['status'] = 'COMPLETED'
-                self.data[:recoveries][db_name][i]['recoveryCompleteDate'] = Time.now.strftime('%d-%b-%Y %H:%M:%S UTC')
-                b = self.data[:backups][db_name][i]
-              end
-            end
-          }
+          recoveries.each_with_index do |r, i|
+            next unless r['status'] = 'IN PROGRESS'
+            next unless Time.now - data[:created_at][:recoveries][db_name][i] >= Fog::Mock.delay
+            data[:created_at][:recoveries][db_name].delete(i)
+            data[:recoveries][db_name][i]['status'] = 'COMPLETED'
+            data[:recoveries][db_name][i]['recoveryCompleteDate'] = Time.now.strftime('%d-%b-%Y %H:%M:%S UTC')
+            b = data[:backups][db_name][i]
+          end
           response.body = {
             'recoveryList' => recoveries
           }

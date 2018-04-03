@@ -2,11 +2,11 @@ module Fog
   module Compute
     class OracleCloud
       class Real
-      	def list_volumes
+        def list_volumes
           response = request(
-            :expects  => 200,
-            :method   => 'GET',
-            :path     => "/storage/volume/Compute-#{@identity_domain}/#{@username}/"
+            expects: 200,
+            method: 'GET',
+            path: "/storage/volume/Compute-#{@identity_domain}/#{@username}/"
           )
           response
         end

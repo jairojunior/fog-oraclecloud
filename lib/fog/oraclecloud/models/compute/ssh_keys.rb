@@ -2,21 +2,20 @@ require 'fog/core/collection'
 
 module Fog
   module Compute
-  	class OracleCloud
-	    class SshKeys < Fog::Collection
+    class OracleCloud
+      class SshKeys < Fog::Collection
+        model Fog::Compute::OracleCloud::SshKey
 
-	    	model Fog::Compute::OracleCloud::SshKey
-				
- 				def get(name)
+        def get(name)
           data = service.get_ssh_key(name).body
           new(data)
-        end
+       end
 
-				def all
-					data = service.list_ssh_keys().body['result']
-					load(data)
-				end
-	    end
-	  end
+        def all
+          data = service.list_ssh_keys.body['result']
+          load(data)
+        end
+      end
+    end
   end
 end

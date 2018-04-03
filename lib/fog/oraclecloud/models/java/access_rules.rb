@@ -19,12 +19,12 @@ module Fog
           if !rule.nil?
             rule
           else
-            raise Fog::OracleCloud::Java::NotFound.new("Access Rule #{rule_name} does not exist");
+            raise Fog::OracleCloud::Java::NotFound, "Access Rule #{rule_name} does not exist"
           end
         end
 
         def new(attributes = {})
-          super({:service_name=>instance.service_name}.merge!(attributes))
+          super({ service_name: instance.service_name }.merge!(attributes))
         end
       end
     end

@@ -5,7 +5,7 @@ module Fog
       recognizes :oracle_region
 
       model_path	'fog/oraclecloud/models/database'
-      model				:instance
+      model	:instance
       collection	:instances
       model       :backup
       collection  :backups
@@ -20,7 +20,7 @@ module Fog
       model       :access_rule
       collection  :access_rules
 
-			request_path 'fog/oraclecloud/requests/database'
+      request_path 'fog/oraclecloud/requests/database'
       request :list_instances
       request :get_instance
       request :get_instance_from_job
@@ -42,51 +42,45 @@ module Fog
       request :get_access_rule
       request :list_access_rules
 
-
       class Real
-
-      	def initialize(options={})
-      		@username = options[:oracle_username]
-      		@password = options[:oracle_password]
-      		@identity_domain   = options[:oracle_domain]
+        def initialize(options = {})
+          @username = options[:oracle_username]
+          @password = options[:oracle_password]
+          @identity_domain = options[:oracle_domain]
           region_url = options[:oracle_region] == 'emea' ? 'https://dbcs.emea.oraclecloud.com' : 'https://dbaas.oraclecloud.com'
           Excon.ssl_verify_peer = false
           Fog::Logger.debug("Using region_url #{region_url}")
           @connection = Fog::XML::Connection.new(region_url)
-      	end
-
-        def username
-          @username
         end
 
-        def password
-          @password
-        end
+        attr_reader :username
 
-      	def auth_header
-        	auth_header ||= 'Basic ' + Base64.encode64("#{@username}:#{@password}").gsub("\n",'')
-      	end
+        attr_reader :password
+
+        def auth_header
+          auth_header ||= 'Basic ' + Base64.encode64("#{@username}:#{@password}").delete("\n")
+        end
 
         def request(params, parse_json = true, &block)
           begin
-            Fog::Logger.debug("Sending #{params[:body].to_s} to (#{params[:method]}):#{params[:path]}")
-            response = @connection.request(params.merge!({
-              :headers  => {
-                'Authorization' => auth_header,
-                'X-ID-TENANT-NAME' => @identity_domain,
-                'Content-Type' => 'application/json',
-                #'Accept'       => 'application/json'
-              }.merge!(params[:headers] || {})
-            }), &block)
+            Fog::Logger.debug("Sending #{params[:body]} to (#{params[:method]}):#{params[:path]}")
+            response = @connection.request(params.merge!(
+                                             headers: {
+                                               'Authorization' => auth_header,
+                                               'X-ID-TENANT-NAME' => @identity_domain,
+                                               'Content-Type' => 'application/json',
+                                               # 'Accept'       => 'application/json'
+                                             }.merge!(params[:headers] || {})
+            ), &block)
           rescue Excon::Errors::HTTPStatusError => error
             raise case error
-            when Excon::Errors::NotFound
-              Fog::OracleCloud::Database::NotFound.slurp(error)
-            else
-              error
+                  when Excon::Errors::NotFound
+                    Fog::OracleCloud::Database::NotFound.slurp(error)
+                  else
+                    error
             end
           end
-          #https://jaas.oraclecloud.com/paas/service/jcs/api/v1.1/instances/agriculture/status/create/job/2781084
+          # https://jaas.oraclecloud.com/paas/service/jcs/api/v1.1/instances/agriculture/status/create/job/2781084
           if !response.body.empty? && parse_json
             # The Oracle Cloud doesn't return the Content-Type header as application/json, rather as application/vnd.com.oracle.oracloud.provisioning.Pod+json
             # Should add check here to validate, but not sure if this might change in future
@@ -97,31 +91,27 @@ module Fog
       end
 
       class Mock
-        def initialize(options={})
+        def initialize(options = {})
           @username = options[:oracle_username]
           @password = options[:oracle_password]
-          @identity_domain   = options[:oracle_domain]
+          @identity_domain = options[:oracle_domain]
         end
 
-        def username
-          @username
-        end
+        attr_reader :username
 
-        def password
-          @password
-        end
+        attr_reader :password
 
-        def self.data 
+        def self.data
           @data ||= {
-            :instances  => {},
-            :snapshots  => {},
-            :servers    => {},
-            :backups    => {},
-            :access_rules => {},
-            :recoveries => {},
-            :deleted_at => {},
-            :created_at => {},
-            :maintenance_at => {}
+            instances: {},
+            snapshots: {},
+            servers: {},
+            backups: {},
+            access_rules: {},
+            recoveries: {},
+            deleted_at: {},
+            created_at: {},
+            maintenance_at: {}
           }
         end
 
@@ -129,7 +119,7 @@ module Fog
           @data = nil
         end
 
-        def data 
+        def data
           self.class.data
         end
       end

@@ -2,11 +2,11 @@ module Fog
   module Compute
     class OracleCloud
       class Real
-      	def list_security_lists
+        def list_security_lists
           response = request(
-            :expects  => 200,
-            :method   => 'GET',
-            :path     => "/seclist/Compute-#{@identity_domain}/#{@username}/"
+            expects: 200,
+            method: 'GET',
+            path: "/seclist/Compute-#{@identity_domain}/#{@username}/"
           )
           response
         end

@@ -2,12 +2,11 @@ module Fog
   module Storage
     class OracleCloud
       class Objects < Fog::Collection
-
         attribute :container
 
-      	model Fog::Storage::OracleCloud::Object
+        model Fog::Storage::OracleCloud::Object
 
-      	def all
+        def all
           requires :container
           objects = service.get_container_with_objects(container.name)
           load(objects.body)
@@ -19,9 +18,7 @@ module Fog
           data['name'] = name
           new(data)
         end
-
       end
     end
-
   end
 end

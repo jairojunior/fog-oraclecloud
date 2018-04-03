@@ -2,12 +2,12 @@ module Fog
   module Compute
     class OracleCloud
       class Real
-      	def list_shapes
+        def list_shapes
           response = request(
-            :expects => 200,
-            :method  => 'GET',
-            :path    => "/shape/",
-            :headers => {
+            expects: 200,
+            method: 'GET',
+            path: '/shape/',
+            headers: {
               'Content-Type' => 'application/oracle-compute-v3+json',
               'Accept' => 'application/oracle-compute-v3+json'
             }
@@ -20,7 +20,7 @@ module Fog
         def list_shapes
           response = Excon::Response.new
 
-          shapes = self.data[:shapes].values
+          shapes = data[:shapes].values
 
           response.body = {
             'result' => shapes

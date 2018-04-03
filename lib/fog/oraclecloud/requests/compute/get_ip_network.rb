@@ -2,13 +2,13 @@ module Fog
   module Compute
     class OracleCloud
       class Real
-				def get_ip_network(name)
+        def get_ip_network(name)
           name.sub! "/Compute-#{@identity_domain}/#{@username}/", ''
- 					response = request(
-            :expects  => 200,
-            :method   => 'GET',
-            :path     => "/network/v1/ipnetwork/Compute-#{@identity_domain}/#{@username}/#{name}",
-            :headers  => {
+          response = request(
+            expects: 200,
+            method: 'GET',
+            path: "/network/v1/ipnetwork/Compute-#{@identity_domain}/#{@username}/#{name}",
+            headers: {
               'Content-Type' => 'application/oracle-compute-v3+json',
               'Accept' => 'application/oracle-compute-v3+json'
             }
@@ -22,12 +22,12 @@ module Fog
           response = Excon::Response.new
           clean_name = name.sub "/Compute-#{@identity_domain}/#{@username}/", ''
 
-          if ip = self.data[:ip_networks][clean_name] 
+          if ip = data[:ip_networks][clean_name]
             response.status = 200
             response.body = ip
             response
-          else;
-            raise Fog::Compute::OracleCloud::NotFound.new("IP Network #{name} does not exist");
+          else
+            raise Fog::Compute::OracleCloud::NotFound, "IP Network #{name} does not exist"
           end
         end
       end
